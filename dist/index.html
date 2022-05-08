@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <link href="/dist/output.css" rel="stylesheet" />
+    </head>
+    <body>
+        <section class="bg-white dark:bg-gray-800" x-data="{todoList: [], userInput: ''}">
+            <div class="max-w-lg px-6 py-16 mx-auto space-y-12">
+                <form x-on:submit.prevent class="text-center w-full">
+                    <h1 class="text-3xl font-semibold text-gray-800 dark:text-gray-100">Got something on your mind?</h1>
+                    <p class="max-w-md mx-auto mt-5 text-gray-500 dark:text-gray-400">Write it down to have a better chance of getting it done.</p>
+
+                    <div class="flex flex-col mt-8 space-y-3 sm:space-y-0 sm:flex-row sm:justify-center sm:-mx-2">
+                        <input " type="text" class="px-4 py-2 text-gray-700 bg-white border rounded-md sm:mx-2 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 text-left focus:border-blue-400
+                        dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 md:w-80 " placeholder="Add a new todo" x-model="userInput"/>
+
+                        <button
+                            class="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-700 rounded-md sm:mx-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                            x-on:click="
+                                if(userInput.trim().length > 0)
+                                    todoList.push({ name: userInput, completed: false });
+                                userInput = '';
+                            "
+                        >
+                            Add
+                        </button>
+                    </div>
+                </form>
+                <div class="flex flex-col gap-2 justify-center content-center w-full">
+                    <template x-for="todo in todoList">
+                        <div class="form-check">
+                            <button
+                                type="button"
+                                class="inline-block rounded-sm bg-red-50 text-red-700 fill-red-700 leading-normal hover:bg-red-100 focus:bg-red-100 focus:shadow-md focus:outline-none focus:ring-0 active:bg-red-100 transition duration-150 ease-in-out w-4 h-4"
+                                @click="todoList = todoList.filter((currTodo) => currTodo != todo)"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 mx-auto" viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z"
+                                    />
+                                </svg>
+                            </button>
+
+                            <input class="form-check-input h-4 w-4 cursor-pointer" type="checkbox" value="" x-model="todo.completed" id="flexCheckDefault" />
+                            <label class="form-check-label inline-block text-gray-800" for="flexCheckDefault" x-text="todo.name" x-bind:class="todo.completed ? 'line-through' : ''"> </label>
+                        </div>
+                    </template>
+                </div>
+
+                <div
+                    class="absolute bottom-0 left-0 w-full max-w-full flex flex-wrap items-center justify-between py-3 bg-gray-100 text-gray-500 hover:text-gray-700 focus:text-gray-700 shadow-sm navbar navbar-expand-lg navbar-light rounded"
+                >
+                    <div class="container-fluid w-full flex flex-row items-center justify-evenly px-2">
+                        <div class="bg-grey-light rounded-md w-full" aria-label="breadcrumb">
+                            <ol class="list-reset flex">
+                                <li class="text-gray-500 hover:text-gray-600" x-text="`Completed: ${todoList.filter(todo=> todo.completed).length}`"></li>
+                                <li><span class="text-gray-500">/</span></li>
+                                <li class="text-gray-500 hover:text-gray-600" x-text="todoList.length"></li>
+                            </ol>
+                        </div>
+                        <button
+                            type="button"
+                            class="inline-block min-w-fit px-6 py-2 border-2 border-red-600 text-red-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out float-right"
+                            x-show="todoList.length > 0"
+                            @click="todoList = []"
+                        >
+                            Clear all
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
